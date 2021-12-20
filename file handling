@@ -1,0 +1,164 @@
+#include <stdio.h>
+struct studentData{
+  int id_no;
+  char name[50];
+  int prize;
+  char address[200];
+
+};
+void accept(struct studentData arr[],int n){
+for(int i=0;i<n;i++)
+{
+  printf("Enter Student %d Name\n",i+1);
+  scanf("%s",arr[i].name);
+  printf("Enter Student %d id No\n",i+1);
+  scanf("%d",&arr[i].id_no);
+   printf("Enter Student %d prize\n",i+1);
+   scanf(" %d",&arr[i].prize);
+    printf("Enter Student %d Address\n",i+1);
+    scanf("%s",arr[i].address);
+}
+}
+void write_func(struct studentData arr[],int n)
+{
+  FILE *fp;
+  fp=fopen("StudentData.txt","a");
+  if(fp==NULL){
+    printf("Error\n");
+  }
+  else{
+    
+    for(int i=0;i<n;i++){
+
+      fprintf(fp,"%s %d %d %s",arr[i].name,arr[i].id_no,arr[i].prize,arr[i].address);
+      fputs("\n",fp);
+    }
+  }
+  fclose(fp);
+
+}
+void display(struct studentData arr[],int n)
+{
+ FILE *fp;
+  struct studentData a[n];
+  fp=fopen("StudentData.txt","r");
+
+  for(int i=0;i<n;i++)
+  {
+fscanf(fp,"%s %d %d %s",a[i].name,&a[i].id_no,&a[i].prize,a[i].address);
+printf("%s %d %d %s",a[i].name,a[i].id_no,a[i].prize,a[i].address);
+}
+fclose(fp);
+}
+void read_func(struct studentData arr[],int n)
+{
+  FILE *fp;
+  struct studentData a[n];
+  fp=fopen("StudentData.txt","r");
+if(fp==NULL)
+{
+  printf("NO DATA exits\n");
+  return;
+}
+  for(int i=0;i<n;i++)
+  {
+fscanf(fp,"%s %d %d %s",a[i].name,&a[i].id_no,&a[i].prize,a[i].address);
+}
+fclose(fp);
+
+}
+void search_func(struct studentData arr[],int n)
+{
+  int id;
+  printf("Enter the id no you want to search\n");
+  scanf("%d",& id);
+  FILE *fp;
+  struct studentData a[n];
+  fp=fopen("StudentData.txt","r");
+
+  for(int i=0;i<n;i++)
+  {
+fscanf(fp,"%s %d %d %s\n",a[i].name,&a[i].id_no,&a[i].prize,a[i].address);
+}
+fclose(fp);
+for(int i=0;i<n;i++)
+{
+  if(id==a[i].id_no)
+  printf("%s %d %d %s",a[i].name,a[i].id_no,a[i].prize,a[i].address);
+}
+}
+void delete_func(struct studentData arr[],int n)
+{
+  int roll;
+  printf("Enter the id no to delete\n");
+  scanf("%d",&roll);
+    FILE *fp;
+  struct studentData a[n];
+  fp=fopen("StudentData.txt","r");
+
+  for(int i=0;i<n;i++)
+  {
+fscanf(fp,"%s %d %d %s\n",a[i].name,&a[i].id_no,&a[i].prize,a[i].address);
+}
+fclose(fp);
+fp=fopen("StudentData.txt","w");
+int j,count=0;
+for( j=0;j<n;j++)
+{
+if(roll!=a[j].id_no)
+{
+ fprintf(fp,"%s %d %d %s",a[j].name,a[j].id_no,a[j].prize,a[j].address);
+      fputs("\n",fp);
+      count++;
+}
+}
+
+fclose(fp);
+
+}
+int main(void) {
+  int n;
+  printf("Enter no of Students to be taken\n");
+  scanf("%d",&n);
+  struct studentData arr[n];
+
+int choice;
+for(;;)
+{
+printf("Enter the operation you want to perform\n");
+printf("1.Accept\n");
+printf("2.Append\n");
+printf("3.Read\n");
+printf("4.Display the Data\n");
+printf("5.Search for a student using roll no\n");
+printf("6.Delete a particular student data\n");
+printf("7.To End the program\n");
+scanf("%d",&choice);
+switch(choice){
+  case 1:
+  accept(arr, n);
+  case 2:
+  write_func(arr,n);
+  break;
+  case 3:
+  read_func(arr,n);
+break;
+case 4:
+display(arr,n);
+break;
+case 5:
+search_func(arr, n);
+break;
+case 6:
+delete_func(arr, n);
+case 7:
+goto label;
+break;
+  default:
+  printf("Invalid Input\n");
+
+}
+}
+label:
+  return 0;
+}
